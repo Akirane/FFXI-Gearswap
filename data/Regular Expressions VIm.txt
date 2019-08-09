@@ -1,3 +1,0 @@
-#Removing content inside of quotation marks
-s/"\([^"]*\)/ "/
-
