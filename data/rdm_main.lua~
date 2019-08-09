@@ -1,0 +1,134 @@
+--local enhancing_gear = require "enhancinggear"
+--include('organizer-lib')
+--include('Mote-Include.lua')
+--include('Akirane/RDM/enhancinggear') 
+
+--enhancinggear.get_enhancing_gear_sets()
+
+
+-- Load and initialize the include file.
+function get_sets()
+  mote_include_version = 2
+	include('Mote-Include.lua')
+	include('organizer-lib')
+end
+
+function init_gear_sets()
+	sets.precast.FC['Enhancing Magic'] = {
+		head={name="Warlock's Chapeau", bag="wardrobe"},
+	 	body={name="Duelist's Tabard +2", augments={'Enhances "Chainspell" effect'}, bag="wardrobe"},
+    waist={name="Witful Belt", bag="wardrobe"},
+    legs={name="Orvail pants +1", bag="wardrobe"}
+	}
+
+  sets.midcast['Healing Magic'] = {
+    head={name="Buremte hat", bag="wardrobe"},
+    ear2={name="Gifted Earring", bag="wardrobe"},
+    neck={name="Colossus's Torque", bag="wardrobe"},
+    hands={name="Weatherspoon cuffs", bag="wardrobe"},
+    legs={name="Warlock's Tights", bag="wardrobe"},
+    back={name="Oretania's cape", bag="wardrobe"}
+  }
+
+  sets.midcast['Enfeebling Magic'] = {
+    head={name="Buremte hat", bag="wardrobe"},
+    ear2={name="Gifted Earring", bag="wardrobe"},
+    neck={name="Colossus's Torque", bag="wardrobe"},
+    hands={name="Weatherspoon cuffs", bag="wardrobe"},
+    legs={name="Warlock's Tights", bag="wardrobe"},
+    back={name="Oretania's cape", bag="wardrobe"}
+  }
+
+  sets.midcast['Enhancing Magic'] = {
+    head={name="Buremte hat", bag="wardrobe"},
+    ear2={name="Gifted Earring", bag="wardrobe"},
+    neck={name="Colossus's Torque", bag="wardrobe"},
+    body={name="Duelist's Tabard +2", augments={'Enhances "Chainspell" effect'}, bag="wardrobe"},
+    hands={name="Duelist's gloves +2", bag="wardrobe"},
+    ring1={name="Sirona's Ring", bag="wardrobe"},
+    legs={name="Warlock's Tights", bag="wardrobe"},
+    feet={name="Estoqueur's houseaux +2", bag="wardrobe"},
+    waist={name="Bishop's sash", bag="wardrobe"}
+  }
+
+	sets.idle = {
+		head={name="Duelist's Chapeau +2", bag="wardrobe"},
+    ear1={name="Brachyura Earring", bag="wardrobe"},
+    ear2={name="Moonshade earring", bag="wardrobe"},
+    neck={name="Wiglen gorget", bag="wardrobe"},
+		body={name="Orvail Robe +1", bag="wardrobe"},
+    hands={name="Serpentes Cuffs", bag="wardrobe"},
+    ring2={name="Sheltered Ring", bag="wardrobe"},
+    waist={name="Witful Belt", bag="wardrobe"},
+		legs={name="Blood Cuisses", bag="wardrobe"},
+		feet={name="Serpentes sabots", bag="wardrobe"}
+  }
+
+  sets.precast['Requiescat'] = {
+    neck={name="Soil Gorget", bag="wardrobe 2"},
+    waist={name="Soil Belt", bag="wardrobe 2"}
+  }
+
+  sets.engaged = {
+    head={name="Espial Cap", bag="wardrobe 2"},
+    neck={name="Houyi's Gorget", bag="wardrobe 2"},
+    body={name="Espial Gambison", bag="wardrobe 2"},
+    hands={name="Espial Bracers", bag="wardrobe 2"},
+    legs={name="Espial Hose", bag="wardrobe 2"},
+    feet={name="Espial Socks", bag="wardrobe 2"},
+    ear1={name="Brutal Earring", bag="wardrobe 2"},
+    ear2={name="Brutal Earring", bag="wardrobe 2"},
+    ring1={name="Tyrant's Ring", bag="wardrobe 2"},
+    ring2={name="Rajas Ring", bag="wardrobe 2"},
+    waist={name="Goading Belt", bag="wardrobe 2"},
+    back={name="Atheling Mantle", bag="wardrobe 2"}
+  }
+end
+
+function precast(spell)
+	if spell.action_type == 'Magic' then
+      equip(sets.precast.FC['Enhancing Magic'])
+  elseif spell.type=="WeaponSkill" then
+    if spell.english == 'Requiescat' then
+      equip(sets.precast['Requiescat'])
+    end
+  end
+end
+
+function midcast(spell)
+  if spell.action_type == 'Magic' then
+	if spell.action_type == 'Magic' then
+	      equip(sets.midcast['Enfeebling Magic'])
+	elseif spell.skill == 'Healing Magic' then
+	      equip(sets.midcast['Healing Magic'])
+        end
+  end
+end
+
+function aftercast(spell)
+    if player.status == 'Idle' then
+        equip(sets.idle)
+    elseif player.status == 'Engaged' then
+    	equip(sets.engaged)
+    end
+end
+
+    -- Example on order
+    -- main="Mafic Cudgel",
+  --       sub="Genmei Shield",
+  --       head={ name="Hagondes Hat +1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+26',},hp=36,mp=32},
+  --       neck="Loricate Torque +1",
+  --       ear2="Brutal Earring",
+  --       ear1={name="Etiolation Earring",hp=50,mp=50},
+  --       --body="Onca Suit",hands=empty,
+  --       left_ring={ name="Dark Ring", augments={'Breath dmg. taken -4%','Phys. dmg. taken -6%','Magic dmg. taken -5%',},hp=-20,mp=20},
+  --       ring2="Defending Ring",
+  --       --back="Umbra Cape",waist="Ninurta's Sash",legs=empty,feet=empty}
+  --       body={name="Hagondes Coat +1",hp=54,mp=59},
+  --       hands={ name="Hagondes Cuffs +1", augments={'Phys. dmg. taken -3%','Mag. Acc.+23',},hp=30,mp=22},
+  --       left_ring={ name="Dark Ring", augments={'Breath dmg. taken -4%','Phys. dmg. taken -6%','Magic dmg. taken -5%',},hp=-20,mp=20},
+  --       ring2="Defending Ring",
+  --       back="Umbra Cape",
+  --       waist="Ninurta's Sash",
+  --       legs={ name="Hagondes Pants +1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -4%','Magic burst dmg.+10%',},hp=43,mp=29},
+  --       feet={name="Battlecast Gaiters",hp=13},
